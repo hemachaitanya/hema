@@ -46,10 +46,29 @@
         dest: /etc/systemd/system/tomcat.service
         owner: tomcat
         group: tomcat
-    - name: reload demon and start tomcat
+    - name: reload demon and staart tomcat
       ansible.builtin.systemd:
         name: systemctl demon and start tomcat
         demond_reload: yes
         enable: yes
-        state: restarted
-    
+        state: started
+    - name: copy the users xml
+      ansible.builtin.copy:
+        src: tomcat_users.xml
+        dest: /opt/tomcat/latest/conf/cotext.xml
+        owner: tomcat
+        group: tomcat
+        remote_src: yes
+    - name: copy the hostmanager appcontext file
+      ansible.builtin.copy:
+        src: hostmanager-context.xml
+        dest: /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
+        owner: tomcat
+        group: tomcat
+    - name: restart tomcat 
+      ansible.builtin.systemd:
+        name: Tomcat 10 servlet container
+        state: present
+        
+
+        
