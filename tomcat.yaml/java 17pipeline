@@ -1,0 +1,35 @@
+---
+- name: install java17 on ubuntu
+  become: yes
+  hosts: all
+  task:
+    - name: java17
+      ansible.builtin.apt:
+        name: openjdk-17-jdk
+        update_cache: true
+        state: present
+
+
+
+---
+pool:
+  name: "Default"
+
+trigger:
+  - main
+
+steps:
+  - script: ansible -i ./java17/hosts -m ping all
+  - script: ansible-playbook -i ./java17/hosts ./java17/java17.yaml
+    
+---
+pool:
+  name: "Default"
+
+trigger:
+  - main
+
+steps:
+  - script: sudo apt update/sudo apt install software-properties-common/sudo add-apt-repository --yes --update ppa:ansible//sudo apt install ansible   
+  - script: 
+

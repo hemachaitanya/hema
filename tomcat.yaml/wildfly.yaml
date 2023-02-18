@@ -1,0 +1,63 @@
+--- 
+- name: install wildfly on ubuntu
+  become: yes
+  hosts: all
+  tasks:
+    - name: install default -jdk
+      ansible.builtin.apt:
+        name: install default -jdk
+        update_cache: yes
+        state: present
+    - name: create user 
+      ansible.builtin.user:
+        name: wiidfly
+        home: /opt/wildfly
+        shell: /sbin/nologin wildfly
+        group: wildfly
+        state: present
+    - name: creat home
+      ansible.builtin.group:
+         name: wildfly
+    - name: download wildfly
+      ansible.builtin.get_url:
+        dest: /tmp
+        group: wildfly
+        owner: wildfly
+        url: https://download.jboss.org/wildfly/$WILDFLY_16.0.0/wildfly-$WILDFLY_16.0.0.tar.gz
+    - name: untire the tar files
+      ansible.builtin.unarchive:
+        dest: /tmp
+        src: /tmp/wildfly-$WILDFLY_16.0.0.tar.gz
+    - name: link files in wildfly
+      ansible.builtin.file:
+        group: wildfly
+        owner: wildfly
+        path: /opt/wildfly 
+        src: /opt/wildfly-$WILDFLY_16.0.0 /opt/wildfly
+        state: link
+    - name: change ownerships in directories
+      ansible.builtin.file:
+        path: /opt/wildfly
+        src: /opt/wildfly
+        state: directory
+    - name: create one directory
+        ansible.builtin.file:
+        group: wildfly
+        owner: wiidfly
+        path: /etc/wildfly
+        state: touch
+    - name: copy the configuration file
+      ansible.builtin.copy:
+        group: wildfly
+        owner: wildfly
+        src: wildfly.conf
+        path: /opt/wildfly/docs/contrib/scripts/systemd/wildfly.conf
+        dest: /etc/wildfly/
+        
+
+
+
+
+
+
+

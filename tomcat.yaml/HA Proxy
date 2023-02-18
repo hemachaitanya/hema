@@ -1,0 +1,75 @@
+---
+- name: install HAProxy on ubuntu
+  become: yes
+  hosts: all
+  tasks:
+    - name: install haproxy
+      ansible.builtin.apt:
+        name: haproxy
+        update_cache: true
+        state: present
+      when: ansible_facts['host_private_ip'] == "172.31.0.37"
+    - name: install apache2
+      ansible.builtin.apt:
+        name: apache2
+        update_cache: true
+        state: present
+      when: ansible_facts['host_private_ip'] == "172.31.0.86"
+    - name: install nginx
+      ansible.builtin.apt:
+        name: apache2
+        update_cache: true
+        state: present
+    - name: system control
+      ansible.builtin.systemd:
+        name: haproxy.cfg
+        enabled: true
+        state: restarted
+    - name: copy in ansible 
+      ansible.builtin.copy:
+        dest: /etc/haproxy/haproxy.cfg
+        content:
+          - frontend linuxtechi
+              bind *:80
+              stats uri /haproxy?stats
+              default_backend web-servers
+          - backend web-servers
+              balance roundrobin
+              server web1 172.31.0.46:80
+              server web2 172.31.0.86:80
+          - listen stats
+              bind *:8080
+              stats enable
+              stats uri /
+              stats refresh 5s
+              stats realm Haproxy\ Statistics
+              stats auth linuxtechi:P@ss123     #Login User and Password for the monitoring
+        remote_src: true
+        src: haproxy.cfg
+    - name: restartapache2 server
+      ansible.builtin.systemd:
+        name: apache2
+        enabled: true
+        state: restarted
+    - name: restart nginx server
+      ansible.builtin.systemd:
+        name: nginx
+        enabled: true
+        state: restarted
+    - name: restart haproxy server
+      ansible.builtin.systemd:
+        name: haproxy.cfg
+        enabled: true
+        state: restarted
+
+
+        
+        
+        
+
+      
+
+      
+
+    
+    
