@@ -21,8 +21,10 @@
         name: tomcat
         state: present
     - name: extract tomcat
+      ansible.builtin.get_url:
+         dest: /tmp
+         url: https://www-eu.apache.org/dist/tomcat/tomcat-10/v${VERSION}/bin/apache-tomcat-10.0.20.tar.gz 
       ansible.builtin.unarchive:
-        src: https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.20/bin/apache-tomcat-10.0.20.tar.gz
         remote_src: yes
         dest: tar.gz -C /opt/tomcat
     - name: create a symbolic link
