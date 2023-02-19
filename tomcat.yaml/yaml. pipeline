@@ -4,6 +4,20 @@ pool:
 trigger:
   - main
 steps:
-  - script: ansible -i 
+  - script: echo 'hello world'
+  - script: echo 'i am hemachaitanya'
+
+
+
+
+
+
+---
+pool: deafault
+
     
-    
+trigger:
+  - main
+
+steps:
+  tasks: 
