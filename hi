@@ -1,0 +1,14 @@
+---
+pool: default
+
+trigger:
+  - main
+
+steps: 
+- task: Maven@3
+  inputs:
+    mavenPOMFile: 'pom.xml'
+      publishJUnitResults: true 
+      testResultsFiles: '**/TEST-*.xml'
+      javaHomeOption: 'path'
+      

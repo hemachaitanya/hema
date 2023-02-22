@@ -18,7 +18,7 @@
         url: https://github.com/hemachaitanya/spring-petclinic.git
         dest: /tmp
     - name: copy service file to systemd
-      command: /tmp/spring-petclinic/target/ ls
+      command: /tmp/spring-petclinic-3.0.0-SNAPSHOT.jar/
     - name: maven version
       ansible.builtin.package:
         name: mvn
