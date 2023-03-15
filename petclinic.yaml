@@ -1,0 +1,16 @@
+---
+- name: petclinic
+  become: yes
+  hosts: all
+  tasks:
+    - name: copying the file
+      copy:
+        src: /home/satya/spc.service
+        dest: /etc/systemd/system/spc.service
+        mode: '777'
+    - name: deamon
+      systemd:
+           state: started
+           daemon_reload: true
+           name: spc.service
+           enabled: true
