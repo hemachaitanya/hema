@@ -1,0 +1,11 @@
+---
+- name : install awscli
+  become : yes
+  hosts : all
+  tasks :
+    - name: install awscli
+      ansible.builtin.apt:
+        name: awscli
+        state: present
+        update_cache: true
+        
